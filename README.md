@@ -20,12 +20,12 @@ dsh plugin --profile web remove dsh-password-gate
 
 ## 设置密码
 
-按优先级：**`--password` 参数** > **`DSH_WEB_PASSWORD` 环境变量** > **启动时随机生成**（随机密码会打印在终端，Jupyter 风格）。
+**不设置任何密码时行为和没装插件完全一样（无需密码）**。只有显式配置了密码才启用门禁：
 
 ```sh
-npx @deepseek-ai/dsh web --password mysecret
-DSH_WEB_PASSWORD=mysecret npx @deepseek-ai/dsh web
-npx @deepseek-ai/dsh web            # 无密码配置时启动会打印生成的密码
+npx @deepseek-ai/dsh web                    # 免密码，与原生一致
+npx @deepseek-ai/dsh web --password mysecret    # 启用门禁
+DSH_WEB_PASSWORD=mysecret npx @deepseek-ai/dsh web   # 启用门禁
 ```
 
 `--help` 里会多出 `--password` 选项：
@@ -41,6 +41,7 @@ npx @deepseek-ai/dsh web --help
   - `web-password-gate`：子类化 in-box 的 `WebServer`，提供同名的 `webServer` 服务，在转发给已注册路由之前校验会话。
 - 登录成功后发放签名 Cookie（`dsh_gate`，HttpOnly + SameSite=Strict，24 小时有效，重启后失效）。
 - 未认证请求：浏览器导航 → 登录页；API/XHR → `401 {"error":"unauthorized"}`；WebSocket → 直接断开。
+- 未配置密码（无 `--password`、无 `DSH_WEB_PASSWORD`）时门禁完全不介入，请求原样转发。
 
 ## 安全说明
 

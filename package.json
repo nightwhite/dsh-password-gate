@@ -1,6 +1,6 @@
 {
   "name": "dsh-password-gate",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Password gate for the DeepSeek Harness web profile: every route (page, /api, WebSocket) requires an access password.",
   "type": "module",
   "main": "./lib/index.js",
@@ -27,11 +27,21 @@
     "commander": "^15.0.0"
   },
   "peerDependenciesMeta": {
-    "@deepseek-ai/cordis": { "optional": true },
-    "@deepseek-ai/schemastery": { "optional": true },
-    "@deepseek-ai/dsh-host-webserver": { "optional": true },
-    "@deepseek-ai/dsh-cmdline": { "optional": true },
-    "commander": { "optional": true }
+    "@deepseek-ai/cordis": {
+      "optional": true
+    },
+    "@deepseek-ai/schemastery": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-host-webserver": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-cmdline": {
+      "optional": true
+    },
+    "commander": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "4.0.1",
