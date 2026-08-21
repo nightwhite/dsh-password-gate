@@ -1,0 +1,32 @@
+# dsh-password-gate bundle patch: password-protect the web profile's HTTP
+# surface — page, /api, and WebSocket — with a login page + session cookie.
+# Applied after @deepseek-ai/dsh-base and @deepseek-ai/dsh-web-app.
+#
+# The app's own startup provider only knows --host/--port/--trusted-host;
+# passing it an unknown --password would terminate the process, so it is
+# disabled and replaced by web-password-startup, which provides the same
+# `webStartup` service plus the password field. The plain webserver row is
+# disabled too; web-password-gate provides the same `webServer` service,
+# checking every request (and upgrade) before dispatching to the registered
+# routes. Rows that inject `webServer` or `webStartup` are unaffected.
+
+- id: web-startup
+  name: '@deepseek-ai/dsh-web-app/startup'
+  disabled: true
+
+- id: webserver
+  name: '@deepseek-ai/dsh-host-webserver'
+  disabled: true
+
+- insert:
+    - id: web-password-startup
+      name: 'dsh-password-gate/startup'
+      inject: [cmdlineArgs]
+
+    - id: web-password-gate
+      name: 'dsh-password-gate'
+      inject: [webStartup]
+      config:
+        host: !!js ctx.webStartup.host ?? '127.0.0.1'
+        port: !!js ctx.webStartup.port ?? 3080
+        password: !!js ctx.webStartup.password ?? process.env.DSH_WEB_PASSWORD
