@@ -9,7 +9,7 @@
 dsh plugin --profile web add file:/path/to/dsh-password-gate
 
 # 或从 GitHub 安装
-dsh plugin --profile web add github:<user>/dsh-password-gate
+dsh plugin --profile web add github:nightwhite/dsh-password-gate
 ```
 
 卸载：
